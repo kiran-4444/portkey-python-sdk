@@ -242,7 +242,7 @@ def _content_to_input_items(content: Any, system_role: str) -> list[dict[str, An
                 "id": thought_signature or f"reasoning_{len(items)}",
                 "type": "reasoning",
                 "summary": [],
-                "content": [{"type": "reasoning_text", "text": text}],
+                "content": [{"type": "reasoning_summary_text", "text": text}],
             }
             if thought_signature:
                 reasoning_item["encrypted_content"] = thought_signature
@@ -435,7 +435,7 @@ def _response_output_to_parts(output: Iterable[Any]) -> list[Any]:
                 getattr(item, "encrypted_content", None)
             )
             for content in getattr(item, "content", None) or []:
-                if getattr(content, "type", None) == "reasoning_text":
+                if getattr(content, "type", None) == "reasoning_summary_text":
                     parts.append(
                         _build_text_part(
                             getattr(content, "text", ""),
@@ -652,7 +652,7 @@ class PortkeyAdk(_AdkBaseLlm):  # type: ignore[misc]  # _AdkBaseLlm may be a stu
         async for event in stream_response:  # type: ignore[union-attr]  # create() returns union of Response|AsyncStream; we know it's AsyncStream here
             event_type: str | None = getattr(event, "type", None)
 
-            if event_type == "response.reasoning_text.delta":
+            if event_type == "response.reasoning_summary_text.delta":
                 delta: str = getattr(event, "delta", "")
                 if delta:
                     yield _parts_to_llm_response(
