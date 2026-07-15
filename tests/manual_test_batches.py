@@ -2,7 +2,8 @@ import os
 from portkey_ai import Portkey
 
 portkey = Portkey(
-    api_key="Xgv7++HhSeF70UzdVSsmtJuGYe0=", virtual_key="portkey-welcome-e248d3"
+    api_key=os.environ.get("PORTKEY_API_KEY"),
+    virtual_key=os.environ.get("PORTKEY_VIRTUAL_KEY"),
 )
 
 
