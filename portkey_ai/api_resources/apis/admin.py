@@ -1,8 +1,9 @@
 from typing import Any, Dict, List, Literal, Optional, Union
-from portkey_ai._vendor.openai import NOT_GIVEN, NotGiven
-from portkey_ai.api_resources.base_client import APIClient, AsyncAPIClient
 from urllib.parse import urlencode
+
+from portkey_ai._vendor.openai import NOT_GIVEN, NotGiven
 from portkey_ai.api_resources.apis.api_resource import APIResource, AsyncAPIResource
+from portkey_ai.api_resources.base_client import APIClient, AsyncAPIClient
 from portkey_ai.api_resources.types.user_invite_type import (
     UserInviteResponse,
     UserInviteRetrieveAllResponse,
@@ -16,8 +17,7 @@ from portkey_ai.api_resources.types.user_invite_type import (
     WorkspacesListResponse,
     WorkspacesUpdateResponse,
 )
-from portkey_ai.api_resources.utils import GenericResponse
-from portkey_ai.api_resources.utils import PortkeyApiPaths
+from portkey_ai.api_resources.utils import GenericResponse, PortkeyApiPaths
 
 
 class Admin(APIResource):
@@ -195,12 +195,16 @@ class Workspaces(APIResource):
         description: Union[str, NotGiven] = NOT_GIVEN,
         defaults: Union[Dict[str, Any], NotGiven] = NOT_GIVEN,
         users: Union[List[str], NotGiven] = NOT_GIVEN,
+        usage_limits: Union[Dict[str, Any], NotGiven] = NOT_GIVEN,
+        rate_limits: Union[Dict[str, Any], NotGiven] = NOT_GIVEN,
     ) -> WorkspacesAddResponse:
         body = {
             "name": name,
             "description": description,
             "defaults": defaults,
             "users": users,
+            "usage_limits": usage_limits,
+            "rate_limits": rate_limits,
         }
         return self._post(
             f"{PortkeyApiPaths.WORKSPACE_API}",
@@ -258,11 +262,15 @@ class Workspaces(APIResource):
         name: Union[str, NotGiven] = NOT_GIVEN,
         description: Union[str, NotGiven] = NOT_GIVEN,
         defaults: Union[Dict[str, Any], NotGiven] = NOT_GIVEN,
+        usage_limits: Union[Dict[str, Any], NotGiven] = NOT_GIVEN,
+        rate_limits: Union[Dict[str, Any], NotGiven] = NOT_GIVEN,
     ) -> WorkspacesUpdateResponse:
         body = {
             "name": name,
             "description": description,
             "defaults": defaults,
+            "usage_limits": usage_limits,
+            "rate_limits": rate_limits,
         }
         return self._put(
             f"{PortkeyApiPaths.WORKSPACE_API}/{workspace_id}",
