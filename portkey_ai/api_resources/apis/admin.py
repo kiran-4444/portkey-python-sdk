@@ -1,9 +1,8 @@
 from typing import Any, Dict, List, Literal, Optional, Union
-from urllib.parse import urlencode
-
 from portkey_ai._vendor.openai import NOT_GIVEN, NotGiven
-from portkey_ai.api_resources.apis.api_resource import APIResource, AsyncAPIResource
 from portkey_ai.api_resources.base_client import APIClient, AsyncAPIClient
+from urllib.parse import urlencode
+from portkey_ai.api_resources.apis.api_resource import APIResource, AsyncAPIResource
 from portkey_ai.api_resources.types.user_invite_type import (
     UserInviteResponse,
     UserInviteRetrieveAllResponse,
@@ -17,7 +16,8 @@ from portkey_ai.api_resources.types.user_invite_type import (
     WorkspacesListResponse,
     WorkspacesUpdateResponse,
 )
-from portkey_ai.api_resources.utils import GenericResponse, PortkeyApiPaths
+from portkey_ai.api_resources.utils import GenericResponse
+from portkey_ai.api_resources.utils import PortkeyApiPaths
 
 
 class Admin(APIResource):
