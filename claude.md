@@ -139,14 +139,14 @@ class Portkey(APIClient):
     def __init__(self, *, api_key, base_url, virtual_key, config, ...):
         # Initialize base client with headers
         super().__init__(...)
-        
+
         # Create vendored OpenAI client pointing to Portkey gateway
         self.openai_client = OpenAI(
             api_key=OPEN_AI_API_KEY,  # Placeholder key
             base_url=self.base_url,   # Portkey gateway URL
             default_headers=self.allHeaders,
         )
-        
+
         # Initialize all API resources
         self.completions = apis.Completion(self)
         self.chat = apis.ChatCompletion(self)
@@ -223,7 +223,7 @@ def create(
     # Use Omit for params that should be omitted when not provided
     expires_after: Union[ExpiresAfter, Omit] = omit,
     file_ids: Union[List[str], Omit] = omit,
-    
+
     # Use NotGiven for params where None is a valid, distinct value
     # e.g., timeout=None means "no timeout", timeout=NOT_GIVEN means "use default"
     timeout: Union[float, httpx.Timeout, None, NotGiven] = NOT_GIVEN,
@@ -270,7 +270,7 @@ def create(self, *, name: str, **kwargs):
     extra_query = kwargs.pop("extra_query", None)
     extra_body = kwargs.pop("extra_body", None)
     timeout = kwargs.pop("timeout", None)
-    
+
     # Merge remaining kwargs into extra_body
     user_extra_body = extra_body or {}
     merged_extra_body = {**user_extra_body, **kwargs}
@@ -445,7 +445,7 @@ The tool rewrites imports from `openai.*` to `portkey_ai._vendor.openai.*`
    ```
 
 2. **`portkey_ai/_vendor/openai/_base_client.py`**
-   
+
    Replace the `_should_retry` method with Portkey's custom logic:
    ```python
    def _should_retry(self, response: httpx.Response) -> bool:
@@ -512,7 +512,7 @@ def new_method(
     extra_query = kwargs.pop("extra_query", None)
     extra_body = kwargs.pop("extra_body", None)
     timeout = kwargs.pop("timeout", None)
-    
+
     response = self.openai_client.with_raw_response.resource.new_method(
         param=param,
         extra_headers=extra_headers,
