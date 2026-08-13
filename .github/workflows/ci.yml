@@ -65,6 +65,6 @@ jobs:
                     python -m pip install --upgrade pip
                     make dev
 
-            -   name: Lint with mypy, black and ruff
+            -   name: Lint with mypy and ruff
                 run: |
                     make lint

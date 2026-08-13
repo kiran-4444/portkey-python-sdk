@@ -82,12 +82,13 @@ exclude = ['portkey_ai/_vendor', 'tests']
 module = 'portkey_ai._vendor.*'
 ignore_errors = true
 
-[tool.black]
-force-exclude = '''(portkey_ai/_vendor)/'''
-
 [tool.ruff]
-exclude = ["portkey_ai/_vendor", "tests"]
+exclude = ["portkey_ai/_vendor", "tests", "*.md"]
 ```
+
+ruff is both the linter (`ruff check`) and the formatter (`ruff format`); black is
+no longer used. `.pre-commit-config.yaml` also excludes `^portkey_ai/_vendor/`
+globally, so the hooks never receive vendored paths at all.
 
 #### 4. Type Reuse vs Redefinition
 **Response types** - OpenAI types are imported directly for nested types:

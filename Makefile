@@ -3,13 +3,18 @@ help: ## Show all Makefile targets
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[33m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: format lint hooks
-format: ## Run code formatter: black
-	black .
-	ruff check . --fix
-lint: ## Run linters: mypy, black, ruff
+# Same scope as mypy's `files` in pyproject.toml. Passing `.` would also pick up
+# untracked scratch files in the repo root, so `make lint` would fail locally
+# while CI passes on the identical commit.
+LINT_PATHS = portkey_ai examples
+
+format: ## Run code formatter: ruff
+	ruff check $(LINT_PATHS) --fix
+	ruff format $(LINT_PATHS)
+lint: ## Run linters: mypy, ruff
 	mypy
-	black . --check
-	ruff check .
+	ruff format $(LINT_PATHS) --check
+	ruff check $(LINT_PATHS)
 hooks: ## Install the git pre-commit hooks (run once per clone)
 	pre-commit install
 	pre-commit run --all-files
@@ -20,8 +25,8 @@ watch-docs: ## Build and watch documentation
 
 build:
 	mypy
-	black . --check
-	ruff check .
+	ruff format $(LINT_PATHS) --check
+	ruff check $(LINT_PATHS)
 	rm -rf dist/ build/
 	python -m pip install build
 	python -m build .
