@@ -3,6 +3,9 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [tool.mypy]
+# Explicit scope. Without this, a bare `mypy .` also type-checks untracked
+# scratch files in the repo root, so `make lint` fails locally while CI passes.
+files = ['portkey_ai', 'examples']
 exclude = ['portkey_ai/_vendor', 'tests']
 ignore_missing_imports = true
 follow_imports = "silent"
